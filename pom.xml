@@ -1,88 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- Версия модели pom.xml -->
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>nikita-lab</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>nikita-lab</name>
-	<description>nikita-lab</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
+	<!-- Информация о текущем проекте (родитель) -->
+	<groupId>com.example</groupId>             <!-- Уникальный идентификатор группы -->
+	<artifactId>nikita-lab</artifactId>        <!-- Имя твоего parent-проекта -->
+	<version>0.0.1-SNAPSHOT</version>           <!-- Версия -->
+	<packaging>pom</packaging>                 <!-- Тип: POM, т.к. это родительский проект  Она говорит Maven'у: ➡️ “Это не обычный модуль с кодом, а просто родительская оболочка (контейнер)”-->
+
+	<name>nikita-lab</name>                     <!-- Название -->
+	<description>parent</description>           <!-- Описание, можешь изменить -->
+
+	<!-- Тут ты перечисляешь модули, которые будут частью проекта -->
+	<modules>
+<!--		<module>user-service</module>           &lt;!&ndash; Путь к модулю относительно корня &ndash;&gt;-->
+		<!-- Добавишь другие модули позже -->
+	</modules>
+
+	<!-- Свойства проекта (версия Java и Spring Boot) -->
 	<properties>
-		<java.version>17</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  <!-- чтобы Java файлы нормально читались при сборке (кириллица, спецсимволы и т.п.)-->
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- если будешь использовать плагины, которые генерируют отчёты (например Jacoco)-->
+		<java.version>17</java.version>               <!-- Используем Java 17 -->
+		<spring.boot.version>3.4.4</spring.boot.version>  <!-- Версия Spring Boot -->
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-			<plugin>
+	<!-- dependencyManagement: сюда ты добавляешь spring-boot-dependencies
+         чтобы не писать версии зависимостей в каждом модуле -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
+	<!-- Плагины, которые можно использовать в модулях (например spring-boot:run) -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
