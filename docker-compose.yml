@@ -1,0 +1,48 @@
+version: '3.8'  # Версия синтаксиса docker-compose
+
+services:
+  # ✅ Сервис базы данных MySQL
+  mysql:
+    image: mysql:8                         # Официальный образ MySQL с Docker Hub
+    container_name: mysql                  # Имя контейнера
+    environment:
+      MYSQL_ROOT_PASSWORD: root            # Пароль для root-пользователя
+      MYSQL_DATABASE: userdb               # Название базы данных, которую создаст MySQL
+      MYSQL_USER: user                     # Обычный пользователь
+      MYSQL_PASSWORD: user                 # Пароль для этого пользователя
+    ports:
+      - "3307:3306"                        # Пробрасываем порт: host 3307 → контейнер 3306
+    networks:
+      - net                                # Подключаем к общей сети "net"
+
+  # ✅ Сервис backend на Spring Boot
+  user-service:
+    build:
+      context: ./user-service              # Папка, где лежит Dockerfile и .jar
+    container_name: user-service
+    ports:
+      - "8081:8081"                        # Проброс порта: host 8081 → контейнер 8081
+    depends_on:
+      - mysql                              # Запускается после mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+    networks:
+      - net
+
+  # ✅ Frontend на Nginx с HTML + JS
+  frontend:
+    build:
+      context: ./frontend                  # Папка с index.html, default.conf и Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"                            # Проброс: localhost → контейнерный Nginx
+    depends_on:
+      - user-service                       # Ждёт, пока запустится бэкенд
+    networks:
+      - net
+
+# 🌐 Общая сеть, чтобы сервисы "видели" друг друга по имени
+networks:
+  net:

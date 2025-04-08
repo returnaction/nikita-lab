@@ -2,11 +2,12 @@ spring:
   application:
     name: user-service
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/nikita-lab?createDatabaseIfNotExist=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#мы это задаем через docker-compoe.yml
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/nikita-lab?createDatabaseIfNotExist=true #и тут уже нужно будет писать имя образа в docker  например mysql:3306
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:

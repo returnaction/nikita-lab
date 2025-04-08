@@ -1,0 +1,13 @@
+что бы запустить проект клонируем и в главной папке где лежат docker-compose.yml
+docker-compose build
+и затем запускаем их всех вручную:
+сначала бд
+docker-compose up -d mysql
+затем backend
+docker-compose up -d user-service
+затем front
+docker-compose up -d frontend
+
+и заходим на localhost:80
+
+
